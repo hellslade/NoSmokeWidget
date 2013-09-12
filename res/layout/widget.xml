@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	 xmlns:android="http://schemas.android.com/apk/res/android"
+	 android:layout_width="match_parent"
+	 android:layout_height="match_parent"
+	 android:background="@drawable/frame">
+	 
+	<ImageView
+	    android:id="@+id/imageView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginRight="10dp"
+	    android:src="@drawable/app_icon" />
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/imageView1">	
+	    <TextView
+	        android:id="@+id/noSmokeDays"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentLeft="true"
+	        android:text="Не курю 10 дней"
+	        android:textColor="#050"
+	        android:textSize="12sp" />
+	    <TextView
+	        android:id="@+id/noSmokeCount"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/noSmokeDays"
+	        android:layout_alignParentLeft="true"
+	        android:text="Невыкурено 200 сиг."
+	        android:textColor="#050"
+	        android:textSize="12sp" />
+	    <TextView
+	        android:id="@+id/noSmokePrice"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/noSmokeCount"
+	        android:layout_alignParentLeft="true"
+	        android:text="Сэкономлено 400 руб."
+	        android:textColor="#050"
+	        android:textSize="12sp" />
+		
+	    <TextView
+	        android:id="@+id/SmokeDays"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentRight="true"
+	        android:text="Прокурено 12 лет"
+	        android:textColor="#900"
+	        android:textSize="12sp" />
+	    <TextView
+	        android:id="@+id/SmokeCount"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/SmokeDays"
+	        android:layout_alignParentRight="true"
+	        android:text="Выкурено 87600 сиг."
+	        android:textColor="#900"
+	        android:textSize="12sp" />
+	    <TextView
+	        android:id="@+id/SmokePrice"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/SmokeCount"
+	        android:layout_alignParentRight="true"
+	        android:text="Затяжек 1314000"
+	        android:textColor="#900"
+	        android:textSize="12sp" />
+    </RelativeLayout>
+</RelativeLayout>

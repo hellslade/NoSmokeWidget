@@ -1,0 +1,114 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.hellslade.nosmokewidget"
+    android:versionCode="2"
+    android:versionName="1.1" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="14" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+		<receiver
+			android:name="WidgetMain"
+			android:icon="@drawable/app_icon"
+			android:label="@string/widget_name">
+			<intent-filter>
+			   <action
+			       android:name="android.appwidget.action.APPWIDGET_UPDATE">
+			   </action>
+			</intent-filter>
+			<meta-data
+			   android:name="android.appwidget.provider"
+			   android:resource="@xml/widget_metadata">
+			</meta-data>
+		</receiver>
+		
+		<receiver
+            android:name="Widget1"
+            android:icon="@drawable/app_icon"
+            android:label="@string/widget_1_name">
+            <intent-filter>
+               <action
+                   android:name="android.appwidget.action.APPWIDGET_UPDATE">
+               </action>
+            </intent-filter>
+            <meta-data
+               android:name="android.appwidget.provider"
+               android:resource="@xml/widget_1_metadata">
+            </meta-data>
+        </receiver>
+        <receiver
+            android:name="Widget2"
+            android:icon="@drawable/app_icon"
+            android:label="@string/widget_2_name">
+            <intent-filter>
+               <action
+                   android:name="android.appwidget.action.APPWIDGET_UPDATE">
+               </action>
+            </intent-filter>
+            <meta-data
+               android:name="android.appwidget.provider"
+               android:resource="@xml/widget_2_metadata">
+            </meta-data>
+        </receiver>
+        
+        <receiver
+            android:name="Widget3"
+            android:icon="@drawable/app_icon"
+            android:label="@string/widget_3_name">
+            <intent-filter>
+               <action
+                   android:name="android.appwidget.action.APPWIDGET_UPDATE">
+               </action>
+            </intent-filter>
+            <meta-data
+               android:name="android.appwidget.provider"
+               android:resource="@xml/widget_3_metadata">
+            </meta-data>
+        </receiver>
+        <receiver
+            android:name="Widget4"
+            android:icon="@drawable/app_icon"
+            android:label="@string/widget_4_name">
+            <intent-filter>
+               <action
+                   android:name="android.appwidget.action.APPWIDGET_UPDATE">
+               </action>
+            </intent-filter>
+            <meta-data
+               android:name="android.appwidget.provider"
+               android:resource="@xml/widget_4_metadata">
+            </meta-data>
+        </receiver>
+        
+        <receiver
+            android:name="Widget5"
+            android:icon="@drawable/app_icon"
+            android:label="@string/widget_5_name">
+            <intent-filter>
+               <action
+                   android:name="android.appwidget.action.APPWIDGET_UPDATE">
+               </action>
+            </intent-filter>
+            <meta-data
+               android:name="android.appwidget.provider"
+               android:resource="@xml/widget_5_metadata">
+            </meta-data>
+        </receiver>
+		
+		<activity 
+		    android:name=".ConfigActivity"
+		    android:icon="@drawable/app_icon"
+		    android:label="@string/no_smoke_config_title">
+		    <intent-filter>
+               <action
+                   android:name="android.appwidget.action.APPWIDGET_CONFIGURE">
+               </action>
+            </intent-filter>
+		</activity>
+    </application>
+</manifest>

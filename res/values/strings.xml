@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">NoSmokeWidget</string>
+	<string name="widget_name">NoSmokeWidget</string>
+	<string name="widget_1_name">NoSmokeWidget Вариант1</string>
+	<string name="widget_2_name">NoSmokeWidget Вариант2</string>
+	<string name="widget_3_name">NoSmokeWidget Вариант3</string>
+	<string name="widget_4_name">NoSmokeWidget Вариант4</string>
+	<string name="widget_5_name">NoSmokeWidget Вариант5</string>
+	
+	<string name="no_smoke_date_label">Дата отказа:</string>
+	<string name="no_smoke_count_label">Количество сигарет в день:</string>
+	<string name="no_smoke_price_label">Стоимость пачки:</string>
+	<string name="no_smoke_years_label">Лет курения:</string>
+	
+	<string name="no_smoke_ok">Добавить</string>
+	
+	<string name="no_smoke_config_title">Настройте свой счетчик</string>
+	
+	<string name="no_smoke_days" formatted="false">Не курю %s %s</string>
+	<string name="no_smoke_count" formatted="false">Невыкурено %s сиг.</string>
+	<string name="no_smoke_price" formatted="false">Сэкономлено %s руб.</string>
+	<string name="smoke_days" formatted="false">Прокурено %s %s</string>
+	<string name="smoke_count" formatted="false">Выкурено %s сиг.</string>
+	<string name="smoke_price" formatted="false">Затяжек %s</string>
+	
+	<string name="w1_no_smoke_days" formatted="false">Я не курю уже %s %s</string>
+	
+	<string name="w2_no_smoke_days" formatted="false">%s %s</string>
+	
+	<string name="w3_no_smoke_days" formatted="false">Не курю %s %s</string>
+    <string name="w3_no_smoke_count" formatted="false">Невыкурено %s сиг.</string>
+    <string name="w3_no_smoke_price" formatted="false">В копилку на новый BMW %s руб.</string>
+    
+    <string name="w4_no_smoke_days" formatted="false">Не курю %s %s</string>
+    <string name="w4_no_smoke_price" formatted="false">Сэкономив %s руб.</string>
+    
+    <string name="w5_no_smoke_days" formatted="false">Не курю %s %s</string>
+    <string name="w5_no_smoke_count" formatted="false">Не выкурил %s сиг.</string>
+	
+	<string-array name="days">
+	    <item>день</item>
+	    <item>дня</item>
+	    <item>дней</item>
+	</string-array>
+	
+	<string-array name="years">
+        <item>год</item>
+        <item>года</item>
+        <item>лет</item>
+    </string-array>
+</resources>
