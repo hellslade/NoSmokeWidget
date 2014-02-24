@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -19,7 +18,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 public class WidgetMain extends AppWidgetProvider {
-
+	public static final String APPWIDGET_DIALOG = "ru.hellslade.nosmokewidget.APPWIDGET_DIALOG";
 	private final static String TAG = "WidgetMain";
 
 	@Override
@@ -88,7 +87,10 @@ public class WidgetMain extends AppWidgetProvider {
 	        price = Float.valueOf(widgetPrice);
 	        years = Integer.valueOf(widgetYears);
 	    } catch (ParseException e) {  
-	        e.printStackTrace(); 
+	        Log.v(TAG, "Ошибка парсинга даты" + e.getMessage()); 
+	        return;
+	    } catch (NumberFormatException e) {
+	    	Log.v(TAG, "Введено неправильное число" + e.getMessage()); 
 	        return;
 	    }
 	    
@@ -99,13 +101,19 @@ public class WidgetMain extends AppWidgetProvider {
 	    widgetView.setTextViewText(R.id.SmokeCount, String.format(res.getString(R.string.smoke_count), years*365*count));
 	    widgetView.setTextViewText(R.id.SmokePrice, String.format(res.getString(R.string.smoke_price), years*365*count*15)); // 15 затяжек за сигарету
 	    
-	    // Конфигурационный экран (первая зона)
+	    Intent dialogIntent = new Intent(context, DialogActivity.class);
+	    dialogIntent.setAction(APPWIDGET_DIALOG);
+	    dialogIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+	    PendingIntent pIntent = PendingIntent.getActivity(context, widgetID, dialogIntent, 0);
+	    widgetView.setOnClickPendingIntent(R.id.configLayout, pIntent);
+	    /*
+	    // Конфигурационный экран
 	    Intent configIntent = new Intent(context, ConfigActivity.class);
 	    configIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
 	    configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
 	    PendingIntent pIntent = PendingIntent.getActivity(context, widgetID, configIntent, 0);
-	    //widgetView.setOnClickPendingIntent(R.id.imageView1, pIntent);
-		
+	    widgetView.setOnClickPendingIntent(R.id.configLayout, pIntent);
+	    */
 		// Обновляем виджет
 		appWidgetManager.updateAppWidget(widgetID, widgetView);
 	}

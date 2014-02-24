@@ -5,26 +5,26 @@
 	 android:layout_height="match_parent"
 	 android:layout_gravity="center_vertical"
 	 android:background="@drawable/frame">
-    <RelativeLayout 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/app_icon" />
+    <RelativeLayout
+        android:id="@+id/configLayout" 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        >  	 
-	    <ImageView
-		    android:id="@+id/imageView1"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_centerVertical="true"
-		    android:layout_marginRight="10dp"
-		    android:src="@drawable/app_icon" />
-	    
+        android:layout_toRightOf="@id/imageView1">      
 	    <TextView
 	        android:id="@+id/w4noSmokeDays"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignTop="@id/imageView1"
-            android:layout_toRightOf="@id/imageView1"
+	        android:layout_alignParentTop="true"
 	        android:text="@string/w4_no_smoke_days"
 	        android:textColor="#050"
 	        android:textSize="18sp" />
@@ -32,8 +32,7 @@
 	        android:id="@+id/w4noSmokePrice"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignBottom="@id/imageView1"
-            android:layout_toRightOf="@id/imageView1"
+	        android:layout_alignParentBottom="true"
 	        android:text="@string/w4_no_smoke_price"
 	        android:textColor="#050"
 	        android:textSize="18sp" />

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp" 
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/configTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:clickable="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@drawable/text_color_selector"
+        android:textSize="18sp"
+        android:background="@drawable/text_bg_selector"
+        android:text="@string/no_smoke_dialog_config_title" />
+    
+    <TextView
+        android:id="@+id/shareTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_smoke_dialog_share_title" />
+    <LinearLayout 
+        android:id="@+id/shareLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+        <ImageButton
+            android:id="@+id/shareVkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/vkontakte"
+            android:background="@drawable/share_bg_selector"
+            android:padding="7dp"
+            />
+        <ImageButton
+            android:id="@+id/shareOdnoklassnikiButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/odnoklassniki"
+            android:background="@drawable/share_bg_selector"
+            android:padding="7dp"
+            />
+        <ImageButton
+            android:id="@+id/shareTwitterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/twitter"
+            android:background="@drawable/share_bg_selector"
+            android:padding="7dp"
+            />
+        <ImageButton
+            android:id="@+id/shareFacebookButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/facebook"
+            android:background="@drawable/share_bg_selector"
+            android:padding="7dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

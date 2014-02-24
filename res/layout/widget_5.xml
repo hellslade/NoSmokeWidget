@@ -5,36 +5,35 @@
 	 android:layout_height="match_parent"
 	 android:layout_gravity="center_vertical"
 	 android:background="@drawable/frame">
-    <RelativeLayout 
+	 <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/app_icon" />
+    <RelativeLayout
+        android:id="@+id/configLayout" 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        >  	 
-	    <ImageView
-		    android:id="@+id/imageView1"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentLeft="true"
-		    android:layout_centerVertical="true"
-		    android:layout_marginRight="10dp"
-		    android:src="@drawable/app_icon" />
-	    
+        android:layout_toRightOf="@id/imageView1">   	 
 	    <TextView
 	        android:id="@+id/w5noSmokeDays"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignTop="@id/imageView1"
-            android:layout_toRightOf="@id/imageView1"
-	        android:text="Не курю 10 дней"
+	        android:layout_alignParentTop="true"
+	        android:text="@string/w5_no_smoke_days"
 	        android:textColor="#050"
 	        android:textSize="18sp" />
 	    <TextView
 	        android:id="@+id/w5noSmokeCount"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignBottom="@id/imageView1"
-            android:layout_toRightOf="@id/imageView1"
-	        android:text="Невыкурено 200 сиг."
+	        android:layout_alignParentBottom="true"
+	        android:text="@string/w5_no_smoke_count"
 	        android:textColor="#050"
 	        android:textSize="18sp" />
 	    

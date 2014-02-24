@@ -15,6 +15,13 @@
 	<string name="no_smoke_ok">Добавить</string>
 	
 	<string name="no_smoke_config_title">Настройте свой счетчик</string>
+	<string name="no_smoke_dialog_title">Выберите действие:</string>
+	
+	<string name="no_smoke_dialog_config_title">Настроить</string>
+	<string name="no_smoke_dialog_share_title">Поделиться:</string>
+	<string name="no_smoke_dialog_share_vk_title">Вконтакте</string>
+	<string name="no_smoke_dialog_share_twitter_title">Twitter</string>
+	<string name="no_smoke_dialog_share_facebook_title">Facebook</string>
 	
 	<string name="no_smoke_days" formatted="false">Не курю %s %s</string>
 	<string name="no_smoke_count" formatted="false">Невыкурено %s сиг.</string>
