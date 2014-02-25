@@ -14,12 +14,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vk.sdk.VKAccessToken;
@@ -79,12 +86,17 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 	private static String[] mVkScope = new String[]{VKScope.WALL, VKScope.PHOTOS};
 	private static String mVkTokenKey = "vk_token_key";
 	
-	private View imageLayout;
+	private ImageView postImage;
+	
+	private TextPaint mTextPaint;
+	private Bitmap mBitmap = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.share_vk_layout);
+	    postImage = (ImageView)findViewById(R.id.postImage);
+	    ((Button)findViewById(R.id.postButton)).setOnClickListener(this);
 		// извлекаем ID конфигурируемого виджета
 	    Intent intent = getIntent();
 	    Bundle extras = intent.getExtras();
@@ -112,7 +124,45 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 		String widgetPrice = sp.getString(ConfigActivity.WIDGET_PRICE + widgetID, null);
 		String widgetYears = sp.getString(ConfigActivity.WIDGET_YEARS + widgetID, null);
 		
-		// Настраиваем внешний вид виджета
+		// Создаем кисть для вывода текста
+		float density = getResources().getDisplayMetrics().density;
+		mTextPaint = new TextPaint(TextPaint.DEV_KERN_TEXT_FLAG | TextPaint.LINEAR_TEXT_FLAG);
+		int[] drawableState = new int[] { 0, 1 };
+		mTextPaint.drawableState = drawableState;
+		mTextPaint.density = density;
+		mTextPaint.setTextSize(50);
+		mTextPaint.setAntiAlias(true);
+		mTextPaint.setColor(Color.parseColor("#005500")); // Зеленый текст
+		int dstWidth = (int)(250*density);
+		int dstHeight = (int)(150*density);
+		// Создаем битмап и канву
+		Bitmap source = Bitmap.createBitmap(dstWidth, dstHeight, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(source);
+		
+		// Рисуем фон
+		NinePatchDrawable npd = (NinePatchDrawable)getResources().getDrawable(R.drawable.frame);
+		npd.setBounds(0, 0, dstWidth, dstHeight);
+		npd.draw(canvas);
+		// Рисуем лого в правом нижнем углу
+    	Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+    	int width = logo.getWidth();
+    	int height = logo.getHeight();
+    	int left = (dstWidth - width)-10;
+    	int top = (dstHeight - height)-20;
+    	canvas.drawBitmap(logo, left, top, null);
+    	logo.recycle();
+    	// Расчеты для вывода текста
+    	// Высота одной строки (задает смещение по у-координате)
+        float yoff = mTextPaint.descent() - mTextPaint.ascent();
+        // Всего строк 6
+        float all_text_height = yoff*6; // Общая высота строк
+        float all_vert_space = dstHeight - all_text_height; // общая высота пробелов между строками
+        float vert_space = (all_vert_space/5)-10; // Междустрочный интервал
+    	String s; // Выводимая строка
+    	// Начальные координаты вывода строки
+    	int x = 20;
+    	int y = (int)yoff;
+		
 		// Считаем количество дней
 		String dtStart = widgetData;
 	    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
@@ -123,8 +173,10 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 	        Date date = format.parse(dtStart);
 	        Calendar now = Calendar.getInstance();
 	        daysCount = daysBetween(date, now.getTime());
-	        ((TextView)findViewById(R.id.noSmokeDays)).setText(String.format(getResources().getString(R.string.no_smoke_days), daysCount, getDaysLabel(this, daysCount)));
-	        
+	        s = String.format(getResources().getString(R.string.no_smoke_days), daysCount, getDaysLabel(this, daysCount));
+	    	
+	    	canvas.drawText(s, x, y, mTextPaint);
+	    	
 	        count = Integer.valueOf(widgetCount);
 	        price = Float.valueOf(widgetPrice);
 	        years = Integer.valueOf(widgetYears);
@@ -135,17 +187,32 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 	    	Log.v(TAG, "Введено неправильное число" + e.getMessage()); 
 	        return;
 	    }
+	    s = String.format(getResources().getString(R.string.no_smoke_count), count*daysCount);
+    	y += (int)(yoff+vert_space);
+    	canvas.drawText(s, x, y, mTextPaint);
+    	
+    	s = String.format(getResources().getString(R.string.no_smoke_price), price*daysCount);
+    	y += (int)(yoff+vert_space);
+    	canvas.drawText(s, x, y, mTextPaint);
+    	
+    	// Красный текст
+    	mTextPaint.setColor(Color.parseColor("#990000"));
+    	
+    	s = String.format(getResources().getString(R.string.smoke_days), years, getYearsLabel(this, years));
+    	y += (int)(yoff+vert_space);
+    	canvas.drawText(s, x, y, mTextPaint);
+    	
+    	s = String.format(getResources().getString(R.string.smoke_count), years*365*count);
+    	y += (int)(yoff+vert_space);
+    	canvas.drawText(s, x, y, mTextPaint);
+    	
+    	s = String.format(getResources().getString(R.string.smoke_price), years*365*count*15);
+    	y += (int)(yoff+vert_space);
+    	canvas.drawText(s, x, y, mTextPaint);
 	    
-	    ((TextView)findViewById(R.id.noSmokeCount)).setText(String.format(getResources().getString(R.string.no_smoke_count), count*daysCount));
-	    ((TextView)findViewById(R.id.noSmokePrice)).setText(String.format(getResources().getString(R.string.no_smoke_price), price*daysCount));
-	    
-	    ((TextView)findViewById(R.id.SmokeDays)).setText(String.format(getResources().getString(R.string.smoke_days), years, getYearsLabel(this, years)));
-	    ((TextView)findViewById(R.id.SmokeCount)).setText(String.format(getResources().getString(R.string.smoke_count), years*365*count));
-	    ((TextView)findViewById(R.id.SmokePrice)).setText(String.format(getResources().getString(R.string.smoke_price), years*365*count*15)); // 15 затяжек за сигарету
-	    ((Button)findViewById(R.id.postButton)).setOnClickListener(this);
-	    
-	    imageLayout = (View)findViewById(R.id.imageLayout);
-	    imageLayout.setDrawingCacheEnabled(true);
+    	mBitmap = source.copy(source.getConfig(), false);
+    	source.recycle();
+    	postImage.setImageBitmap(mBitmap);
 	}
 	@Override
 	public void onClick(View v) {
@@ -156,14 +223,7 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 		}
 	}
 	private Bitmap getPhoto() {
-		imageLayout.buildDrawingCache();
-		Bitmap source = imageLayout.getDrawingCache();
-		float scaleFactor = source.getWidth()/source.getHeight();
-		int dstHeight = 100;
-		int dstWidth = (int)(dstHeight * scaleFactor);
-		Bitmap result = Bitmap.createScaledBitmap(source, dstWidth, dstHeight, false);
-		source.recycle();
-		return result;
+		return mBitmap;
 	}
 	VKSdkListener vkListener = new VKSdkListener() {
 		@Override
