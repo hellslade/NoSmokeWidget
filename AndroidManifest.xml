@@ -102,6 +102,11 @@
             </meta-data>
         </receiver>
 		 -->
+		 <activity 
+            android:name=".ShareVkActivity"
+            android:icon="@drawable/app_icon"
+            android:label="@string/share_vk_title" />
+        
 		<activity 
             android:name=".DialogActivity"
             android:icon="@drawable/app_icon"

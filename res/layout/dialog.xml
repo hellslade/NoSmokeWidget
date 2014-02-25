@@ -45,6 +45,7 @@
             android:src="@drawable/odnoklassniki"
             android:background="@drawable/share_bg_selector"
             android:padding="7dp"
+            android:visibility="gone"
             />
         <ImageButton
             android:id="@+id/shareTwitterButton"
@@ -54,6 +55,7 @@
             android:src="@drawable/twitter"
             android:background="@drawable/share_bg_selector"
             android:padding="7dp"
+            android:visibility="gone"
             />
         <ImageButton
             android:id="@+id/shareFacebookButton"
@@ -63,6 +65,17 @@
             android:src="@drawable/facebook"
             android:background="@drawable/share_bg_selector"
             android:padding="7dp"
+            android:visibility="gone"
+            />
+        <ImageButton
+            android:id="@+id/shareInstagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/instagram"
+            android:background="@drawable/share_bg_selector"
+            android:padding="7dp"
+            android:visibility="gone"
             />
     </LinearLayout>
 

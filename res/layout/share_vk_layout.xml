@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     >
+	<RelativeLayout
+		 android:id="@+id/imageLayout"
+		 android:layout_width="match_parent"
+		 android:layout_height="wrap_content"
+		 android:background="@drawable/frame">
+		 
+		<ImageView
+		    android:id="@+id/imageView1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentTop="true"
+		    android:layout_centerVertical="true"
+		    android:layout_marginRight="10dp"
+		    android:src="@drawable/app_icon" />
+	    <RelativeLayout
+	        android:id="@+id/configLayout" 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@id/imageView1">	
+		    <TextView
+		        android:id="@+id/noSmokeDays"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentLeft="true"
+		        android:text="@string/no_smoke_days"
+		        android:textColor="#050"
+		        android:textSize="12sp" />
+		    <TextView
+		        android:id="@+id/noSmokeCount"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/noSmokeDays"
+		        android:layout_alignParentLeft="true"
+		        android:text="@string/no_smoke_count"
+		        android:textColor="#050"
+		        android:textSize="12sp" />
+		    <TextView
+		        android:id="@+id/noSmokePrice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/noSmokeCount"
+		        android:layout_alignParentLeft="true"
+		        android:text="@string/no_smoke_price"
+		        android:textColor="#050"
+		        android:textSize="12sp" />
+			
+		    <TextView
+		        android:id="@+id/SmokeDays"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentRight="true"
+		        android:text="@string/smoke_days"
+		        android:textColor="#900"
+		        android:textSize="12sp" />
+		    <TextView
+		        android:id="@+id/SmokeCount"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/SmokeDays"
+		        android:layout_alignParentRight="true"
+		        android:text="@string/smoke_count"
+		        android:textColor="#900"
+		        android:textSize="12sp" />
+		    <TextView
+		        android:id="@+id/SmokePrice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/SmokeCount"
+		        android:layout_alignParentRight="true"
+		        android:text="@string/smoke_price"
+		        android:textColor="#900"
+		        android:textSize="12sp" />
+	    </RelativeLayout>
+    </RelativeLayout>
+    <Button
+        android:id="@+id/postButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageLayout"
+        android:layout_margin="20dp"
+        />
+</RelativeLayout>

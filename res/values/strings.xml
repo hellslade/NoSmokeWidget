@@ -16,6 +16,9 @@
 	
 	<string name="no_smoke_config_title">Настройте свой счетчик</string>
 	<string name="no_smoke_dialog_title">Выберите действие:</string>
+	<string name="share_vk_title">Поделиться Вконтакте</string>
+	
+	<string name="share_vk_task_progress_caption">Пожалуста, подождите...</string>
 	
 	<string name="no_smoke_dialog_config_title">Настроить</string>
 	<string name="no_smoke_dialog_share_title">Поделиться:</string>
