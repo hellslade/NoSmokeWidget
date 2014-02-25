@@ -17,7 +17,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,7 +26,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCaptchaDialog;
@@ -213,6 +211,14 @@ public class ShareVkActivity extends Activity implements OnClickListener {
     	mBitmap = source.copy(source.getConfig(), false);
     	source.recycle();
     	postImage.setImageBitmap(mBitmap);
+    	/*
+    	try {
+			mBitmap.compress(CompressFormat.JPEG, 90, new FileOutputStream(new File("/storage/emulated/0/Download/1.jpg")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	*/
 	}
 	@Override
 	public void onClick(View v) {
