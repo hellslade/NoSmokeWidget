@@ -93,9 +93,11 @@ public class WidgetMain extends AppWidgetProvider {
 	    	Log.v(TAG, "Введено неправильное число" + e.getMessage()); 
 	        return;
 	    }
-	    
-	    widgetView.setTextViewText(R.id.noSmokeCount, String.format(res.getString(R.string.no_smoke_count), count*daysCount));
-	    widgetView.setTextViewText(R.id.noSmokePrice, String.format(res.getString(R.string.no_smoke_price), price*daysCount));
+	    long days_of_nosmoke = count*daysCount;
+	    widgetView.setTextViewText(R.id.noSmokeCount, String.format(res.getString(R.string.no_smoke_count), days_of_nosmoke));
+	    // price*daysCount расчет неверный. Количество невыкуренных сигарет разделить на 20 -- получим количество пачек.
+	    // Далее уже умножаем на стоимость пачки.
+	    widgetView.setTextViewText(R.id.noSmokePrice, String.format(res.getString(R.string.no_smoke_price), days_of_nosmoke*price/20));
 	    
 	    widgetView.setTextViewText(R.id.SmokeDays, String.format(res.getString(R.string.smoke_days), years, Utils.getYearsLabel(context, years)));
 	    widgetView.setTextViewText(R.id.SmokeCount, String.format(res.getString(R.string.smoke_count), years*365*count));

@@ -6,6 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -13,6 +17,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.NinePatchDrawable;
 import android.text.TextPaint;
 import android.util.Log;
@@ -35,9 +41,6 @@ public class Utils {
         String widgetData = sp.getString(WIDGET_DATE + widgetId, null);
         if (widgetData == null)
             return null;
-        String widgetCount = sp.getString(WIDGET_COUNT + widgetId, null);
-        String widgetPrice = sp.getString(WIDGET_PRICE + widgetId, null);
-        String widgetYears = sp.getString(WIDGET_YEARS + widgetId, null);
         
         // –асчет ширины-высоты изображени€ в зависимости от dpi экрана
         float density = context.getResources().getDisplayMetrics().density;
@@ -52,37 +55,29 @@ public class Utils {
         npd.setBounds(0, 0, dstWidth, dstHeight);
         npd.draw(canvas);
         
+        // –исуем лого в правом нижнем углу
+        Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon);
+        int width = logo.getWidth();
+        int height = logo.getHeight();
+        int left = (dstWidth - width)-10;
+        int top = (dstHeight - height)-20;
+        canvas.drawBitmap(logo, left, top, null);
+        logo.recycle();
+        
         // —читаем количество дней
         String dtStart = widgetData;
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", mLocale);
-        long daysCount = 0;
-        int count = 0, years = 0;
-        float price = 0;
         try {  
             Date date = format.parse(dtStart);
             Calendar now = Calendar.getInstance();
             
-            int now_day = now.get(Calendar.DAY_OF_MONTH);
-            int now_month = now.get(Calendar.MONTH)+1;
-            int now_year = now.get(Calendar.YEAR);
+            // 
+            int[] dd = dayMonthYearBetween(date, now.getTime());
             
-            int day = date.getDate();
-            int month = date.getMonth()+1;
-            int year = date.getYear()+1900;
+//            Log.v(TAG, "year " + dd[2]);
+//            Log.v(TAG, "month " + dd[1]);
+//            Log.v(TAG, "day " + dd[0]);
             
-//            Log.v(TAG, "day " + day);
-//            Log.v(TAG, "month " + month);
-//            Log.v(TAG, "year " + year);
-            
-            // дней не курени€
-            daysCount = daysBetween(date, now.getTime());
-            
-            // количество сигарет в день
-            count = Integer.valueOf(widgetCount);
-            // стоимость одной пачки
-            price = Float.valueOf(widgetPrice);
-            // лет курени€
-            years = Integer.valueOf(widgetYears);
         } catch (ParseException e) {  
             Log.v(TAG, "ќшибка парсинга даты" + e.getMessage()); 
             return null;
@@ -94,6 +89,21 @@ public class Utils {
         Bitmap bitmap = source.copy(source.getConfig(), false);
         source.recycle();
         return bitmap;
+    }
+    
+    private static int[] dayMonthYearBetween(Date start, Date end) {
+        LocalDate sdate = new LocalDate(start);
+        LocalDate edate = new LocalDate(end);
+        
+        PeriodType yearMonthDay = PeriodType.yearMonthDay();
+        Period difference = new Period(sdate, edate, yearMonthDay);
+        
+        int day   = difference.getDays();
+        int month = difference.getMonths();
+        int year  = difference.getYears();
+        
+        return new int[]{day, month, year};
+        
     }
     
     public static Bitmap getShareBitmap_old(Context context, int widgetId) {
@@ -130,9 +140,15 @@ public class Utils {
         Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon);
         int width = logo.getWidth();
         int height = logo.getHeight();
-        int left = (dstWidth - width)-10;
-        int top = (dstHeight - height)-20;
-        canvas.drawBitmap(logo, left, top, null);
+        int left = (dstWidth - width)/2;
+        int top = (dstHeight - height)/2;
+        Paint p = new Paint();
+        p.setAlpha(50);
+        Matrix matrix = new Matrix();
+        int scaleFactor = dstHeight/height;
+        matrix.postScale(scaleFactor, scaleFactor, width/2, height/2);
+        matrix.postTranslate(left, top);
+        canvas.drawBitmap(logo, matrix, p);
         logo.recycle();
         // –асчеты дл€ вывода текста
         // ¬ысота одной строки (задает смещение по у-координате)
