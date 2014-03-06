@@ -44,8 +44,8 @@ public class Utils {
         
         // Расчет ширины-высоты изображения в зависимости от dpi экрана
         float density = context.getResources().getDisplayMetrics().density;
-        int dstWidth = (int)(250*density);
-        int dstHeight = (int)(150*density);
+        int dstWidth = (int)(300*density);
+        int dstHeight = (int)(80*density);
         // Создаем битмап и канву
         Bitmap source = Bitmap.createBitmap(dstWidth, dstHeight, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(source);
@@ -55,13 +55,19 @@ public class Utils {
         npd.setBounds(0, 0, dstWidth, dstHeight);
         npd.draw(canvas);
         
-        // Рисуем лого в правом нижнем углу
+        // Рисуем лого полупрозрачное в центре на всю ширину/высоту изображения
         Bitmap logo = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon);
-        int width = logo.getWidth();
-        int height = logo.getHeight();
-        int left = (dstWidth - width)-10;
-        int top = (dstHeight - height)-20;
-        canvas.drawBitmap(logo, left, top, null);
+        float width = logo.getWidth();
+        float height = logo.getHeight();
+        float left = (dstWidth - width)/2;
+        float top = (dstHeight - height)/2;
+        Paint p = new Paint();
+        p.setAlpha(50);
+        Matrix matrix = new Matrix();
+        float scaleFactor = (dstHeight-20*density)/height;
+        matrix.postScale(scaleFactor, scaleFactor, width/2, height/2);
+        matrix.postTranslate(10*density, top);
+        canvas.drawBitmap(logo, matrix, p);
         logo.recycle();
         
         // Считаем количество дней
@@ -70,13 +76,57 @@ public class Utils {
         try {  
             Date date = format.parse(dtStart);
             Calendar now = Calendar.getInstance();
+
+            TextPaint mTextPaint;
+            mTextPaint = new TextPaint(TextPaint.DEV_KERN_TEXT_FLAG | TextPaint.LINEAR_TEXT_FLAG);
+            int[] drawableState = new int[] { 0, 1 };
+            mTextPaint.drawableState = drawableState;
+            mTextPaint.density = density;
+            mTextPaint.setTextSize(40);
+            mTextPaint.setAntiAlias(true);
+            mTextPaint.setColor(Color.parseColor("#000000")); // Черный текст
+            float textHeight = mTextPaint.descent() - mTextPaint.ascent();
             
             // 
             int[] dd = dayMonthYearBetween(date, now.getTime());
             
-//            Log.v(TAG, "year " + dd[2]);
-//            Log.v(TAG, "month " + dd[1]);
-//            Log.v(TAG, "day " + dd[0]);
+            int[] digits = getBitmapResourceForDigits(dd[0], dd[1], dd[2]);
+            
+            Bitmap d0 = BitmapFactory.decodeResource(context.getResources(), digits[0]);
+            Bitmap d1 = BitmapFactory.decodeResource(context.getResources(), digits[1]);
+            Bitmap d2 = BitmapFactory.decodeResource(context.getResources(), digits[2]);
+            Bitmap d3 = BitmapFactory.decodeResource(context.getResources(), digits[3]);
+            Bitmap d4 = BitmapFactory.decodeResource(context.getResources(), digits[4]);
+            Bitmap d5 = BitmapFactory.decodeResource(context.getResources(), digits[5]);
+            
+            float digit_width = d0.getWidth();
+            float digit_height = d0.getHeight();
+            Matrix m = new Matrix();
+            scaleFactor = (dstHeight-20*density)/digit_height;
+            float scaledWidth = digit_width*scaleFactor;
+            float scaledHeight = digit_height*scaleFactor;
+            
+            m.postScale(scaleFactor, scaleFactor);
+            top = (dstHeight-scaledHeight)/2;
+            top = 5*density;
+            float textTop = dstHeight - mTextPaint.descent();
+            // Вывод Дней
+            m.postTranslate(dstWidth-scaledWidth, top);
+            canvas.drawBitmap(d0, m, null);
+            m.postTranslate(-scaledWidth+10*density, 0);
+            canvas.drawBitmap(d1, m, null);
+//            canvas.drawText(getDaysLabel(context, dd[0]), dstWidth-2*scaledWidth-10*density, textTop, mTextPaint);
+            // Вывод Месяцев
+            m.postTranslate(-scaledWidth, 0);
+            canvas.drawBitmap(d2, m, null);
+            m.postTranslate(-scaledWidth+10*density, 0);
+            canvas.drawBitmap(d3, m, null);
+            // Вывод Лет
+            m.postTranslate(-scaledWidth, 0);
+            canvas.drawBitmap(d4, m, null);
+            m.postTranslate(-scaledWidth+10*density, 0);
+            canvas.drawBitmap(d5, m, null);
+//            canvas.drawText(getYearsLabel(context, dd[0]), dstWidth-6*scaledWidth-10*density, textTop, mTextPaint);
             
         } catch (ParseException e) {  
             Log.v(TAG, "Ошибка парсинга даты" + e.getMessage()); 
@@ -90,20 +140,63 @@ public class Utils {
         source.recycle();
         return bitmap;
     }
-    
-    private static int[] dayMonthYearBetween(Date start, Date end) {
-        LocalDate sdate = new LocalDate(start);
-        LocalDate edate = new LocalDate(end);
+    private static int[] getBitmapResourceForDigits(int d, int m, int y) {
+        int[] result = new int[6];
         
-        PeriodType yearMonthDay = PeriodType.yearMonthDay();
-        Period difference = new Period(sdate, edate, yearMonthDay);
+        String digits = "";
+        String temp = String.valueOf(d);
+        digits += temp.length() == 2 ? reverseString(temp) : temp + "0"; 
+        temp = String.valueOf(m);
+        digits += temp.length() == 2 ? reverseString(temp) : temp + "0";
+        temp = String.valueOf(y);
+        digits += temp.length() == 2 ? reverseString(temp) : temp + "0";
         
-        int day   = difference.getDays();
-        int month = difference.getMonths();
-        int year  = difference.getYears();
+        for (int i=0; i<digits.length(); i++) {
+            switch (digits.charAt(i)) {
+                case '0':
+                    result[i] = R.drawable.d0;
+                    break;
+                case '1':
+                    result[i] = R.drawable.d1;
+                    break;
+                case '2':
+                    result[i] = R.drawable.d2;
+                    break;
+                case '3':
+                    result[i] = R.drawable.d3;
+                    break;
+                case '4':
+                    result[i] = R.drawable.d4;
+                    break;
+                case '5':
+                    result[i] = R.drawable.d5;
+                    break;
+                case '6':
+                    result[i] = R.drawable.d6;
+                    break;
+                case '7':
+                    result[i] = R.drawable.d7;
+                    break;
+                case '8':
+                    result[i] = R.drawable.d8;
+                    break;
+                case '9':
+                    result[i] = R.drawable.d9;
+                    break;
+                default:
+                    result[i] = R.drawable.d9;
+                    break;
+            }
+        }
         
-        return new int[]{day, month, year};
-        
+        return result;
+    }
+    private static String reverseString(String s) {
+        String newString = "";
+        for (int i=0; i<s.length(); i++) {
+            newString = s.charAt(i) + newString;
+        }
+        return newString;
     }
     
     public static Bitmap getShareBitmap_old(Context context, int widgetId) {
@@ -221,6 +314,21 @@ public class Utils {
         */
         return bitmap;
     }
+    private static int[] dayMonthYearBetween(Date start, Date end) {
+        LocalDate sdate = new LocalDate(start);
+        LocalDate edate = new LocalDate(end);
+        
+        PeriodType yearMonthDay = PeriodType.yearMonthDay();
+        Period difference = new Period(sdate, edate, yearMonthDay);
+        
+        int day   = difference.getDays();
+        int month = difference.getMonths();
+        int year  = difference.getYears();
+        
+        return new int[]{day, month, year};
+        
+    }
+
     /**
      * This method also assumes endDate >= startDate
     **/

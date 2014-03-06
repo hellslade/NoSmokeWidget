@@ -127,7 +127,7 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 	    if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) {
 	        finish();
 	    }
-	    mBitmap = Utils.getShareBitmap_old(this, widgetID);
+	    mBitmap = Utils.getShareBitmap(this, widgetID);
         if (mBitmap == null) {
             Toast.makeText(this, "Ќе удалось получить изображение дл€ поста", Toast.LENGTH_LONG).show();
             finish();
