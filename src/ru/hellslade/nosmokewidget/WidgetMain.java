@@ -31,7 +31,7 @@ public class WidgetMain extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		Log.d(TAG, "onUpdate " + Arrays.toString(appWidgetIds));
-		SharedPreferences sp = context.getSharedPreferences(ConfigActivity.WIDGET_PREF, Context.MODE_PRIVATE);
+		SharedPreferences sp = context.getSharedPreferences(Utils.WIDGET_PREF, Context.MODE_PRIVATE);
         for (int id : appWidgetIds) {
         	updateWidget(context, appWidgetManager, sp, id);
         }
@@ -42,12 +42,12 @@ public class WidgetMain extends AppWidgetProvider {
 		super.onDeleted(context, appWidgetIds);
 		Log.d(TAG, "onDeleted " + Arrays.toString(appWidgetIds));
 		// Удаляем Preferences
-	    Editor editor = context.getSharedPreferences(ConfigActivity.WIDGET_PREF, Context.MODE_PRIVATE).edit();
+	    Editor editor = context.getSharedPreferences(Utils.WIDGET_PREF, Context.MODE_PRIVATE).edit();
 	    for (int widgetID : appWidgetIds) {
-	    	editor.remove(ConfigActivity.WIDGET_DATE + widgetID);
-	    	editor.remove(ConfigActivity.WIDGET_YEARS + widgetID);
-	    	editor.remove(ConfigActivity.WIDGET_COUNT + widgetID);
-	    	editor.remove(ConfigActivity.WIDGET_PRICE + widgetID);
+	    	editor.remove(Utils.WIDGET_DATE + widgetID);
+	    	editor.remove(Utils.WIDGET_YEARS + widgetID);
+	    	editor.remove(Utils.WIDGET_COUNT + widgetID);
+	    	editor.remove(Utils.WIDGET_PRICE + widgetID);
 	    }
 	    editor.commit();
 	}
@@ -62,26 +62,26 @@ public class WidgetMain extends AppWidgetProvider {
 		Log.d(TAG, "updateWidget " + widgetID);
 		Resources res = context.getResources();
 		// Читаем параметры Preferences
-		String widgetData = sp.getString(ConfigActivity.WIDGET_DATE + widgetID, null);
+		String widgetData = sp.getString(Utils.WIDGET_DATE + widgetID, null);
 		if (widgetData == null)
 			return;
-		String widgetCount = sp.getString(ConfigActivity.WIDGET_COUNT + widgetID, null);
-		String widgetPrice = sp.getString(ConfigActivity.WIDGET_PRICE + widgetID, null);
-		String widgetYears = sp.getString(ConfigActivity.WIDGET_YEARS + widgetID, null);
+		String widgetCount = sp.getString(Utils.WIDGET_COUNT + widgetID, null);
+		String widgetPrice = sp.getString(Utils.WIDGET_PRICE + widgetID, null);
+		String widgetYears = sp.getString(Utils.WIDGET_YEARS + widgetID, null);
 		
 		// Настраиваем внешний вид виджета
 		RemoteViews widgetView = new RemoteViews(context.getPackageName(), R.layout.widget);
 		// Считаем количество дней
 		String dtStart = widgetData;
-	    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+	    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Utils.mLocale);
 	    long daysCount = 0;
 	    int count = 0, years = 0;
 	    float price = 0;
 	    try {  
 	        Date date = format.parse(dtStart);
 	        Calendar now = Calendar.getInstance();
-	        daysCount = daysBetween(date, now.getTime());
-	        widgetView.setTextViewText(R.id.noSmokeDays, String.format(res.getString(R.string.no_smoke_days), daysCount, getDaysLabel(context, daysCount)));
+	        daysCount = Utils.daysBetween(date, now.getTime());
+	        widgetView.setTextViewText(R.id.noSmokeDays, String.format(res.getString(R.string.no_smoke_days), daysCount, Utils.getDaysLabel(context, daysCount)));
 	        
 	        count = Integer.valueOf(widgetCount);
 	        price = Float.valueOf(widgetPrice);
@@ -97,7 +97,7 @@ public class WidgetMain extends AppWidgetProvider {
 	    widgetView.setTextViewText(R.id.noSmokeCount, String.format(res.getString(R.string.no_smoke_count), count*daysCount));
 	    widgetView.setTextViewText(R.id.noSmokePrice, String.format(res.getString(R.string.no_smoke_price), price*daysCount));
 	    
-	    widgetView.setTextViewText(R.id.SmokeDays, String.format(res.getString(R.string.smoke_days), years, getYearsLabel(context, years)));
+	    widgetView.setTextViewText(R.id.SmokeDays, String.format(res.getString(R.string.smoke_days), years, Utils.getYearsLabel(context, years)));
 	    widgetView.setTextViewText(R.id.SmokeCount, String.format(res.getString(R.string.smoke_count), years*365*count));
 	    widgetView.setTextViewText(R.id.SmokePrice, String.format(res.getString(R.string.smoke_price), years*365*count*15)); // 15 затяжек за сигарету
 	    
@@ -116,101 +116,5 @@ public class WidgetMain extends AppWidgetProvider {
 	    */
 		// Обновляем виджет
 		appWidgetManager.updateAppWidget(widgetID, widgetView);
-	}
-	/**
-	 * Вернет правильное склонение количества дней
-	 * <string-array name="days">
-	 *   <item>день</item>
-	 *   <item>дня</item>
-	 *   <item>дней</item>
-	 * </string-array>
-	 * если предпоследня цифра 1, то "дней"
-	 * иначе если последняя цифра 0 или >=5, то "дней"
-	 * иначе если последняя цифра 2,3 или 4, то "дня"
-	 * иначе "день".
-	 * @param context
-	 * @param days
-	 * @return
-	 */
-	private static String getDaysLabel(Context context, long days) {
-		// % -- mod
-		// / -- div
-		Resources res = context.getResources();
-		String result = res.getStringArray(R.array.days)[0];
-		
-		long prevprev = (days % 100) / 10; // Предпоследняя цифра
-		long prev = days % 10; // Последняя цифра
-		
-		if (prevprev == 1) {
-			result = res.getStringArray(R.array.days)[2];
-		} else if (prev == 0 || prev >= 5) {
-			result = res.getStringArray(R.array.days)[2];
-		} else if (prev >=2 && prev <= 4) {
-			result = res.getStringArray(R.array.days)[1];
-		} else {
-			result = res.getStringArray(R.array.days)[0];
-		}
-		
-		return result;
-	}
-	/**
-	 * Вернет правильное склонение количества лет
-	 * <string-array name="years">
-	 *   <item>год</item>
-	 *   <item>года</item>
-	 *   <item>лет</item>
-	 * </string-array>
-	 * если предпоследня цифра 1, то "лет"
-	 * иначе если последняя цифра 0 или >=5, то "лет"
-	 * иначе если последняя цифра 2,3 или 4, то "года"
-	 * иначе "год".
-	 * @param context
-	 * @param years
-	 * @return
-	 */
-	private static String getYearsLabel(Context context, long years) {
-		// % -- mod
-		// / -- div
-		Resources res = context.getResources();
-		String result = res.getStringArray(R.array.years)[0];
-		
-		long prevprev = (years % 100) / 10; // Предпоследняя цифра
-		long prev = years % 10; // Последняя цифра
-		
-		if (prevprev == 1) {
-			result = res.getStringArray(R.array.years)[2];
-		} else if (prev == 0 || prev >= 5) {
-			result = res.getStringArray(R.array.years)[2];
-		} else if (prev >=2 && prev <= 4) {
-			result = res.getStringArray(R.array.years)[1];
-		} else {
-			result = res.getStringArray(R.array.years)[0];
-		}
-		
-		return result;
-	}
-	/**
-	 * This method also assumes endDate >= startDate
-	**/
-	public static long daysBetween(Date startDate, Date endDate) {
-	  Calendar sDate = getDatePart(startDate);
-	  Calendar eDate = getDatePart(endDate);
-
-	  long daysBetween = 0;
-	  while (sDate.before(eDate)) {
-	      sDate.add(Calendar.DAY_OF_MONTH, 1);
-	      daysBetween++;
-	  }
-	  return daysBetween;
-	}
-	public static Calendar getDatePart(Date date){
-	    Calendar cal = Calendar.getInstance();       // get calendar instance
-	    cal.setTime(date);      
-	    cal.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
-	    cal.set(Calendar.MINUTE, 0);                 // set minute in hour
-	    cal.set(Calendar.SECOND, 0);                 // set second in minute
-	    cal.set(Calendar.MILLISECOND, 0);            // set millisecond in second
-
-	    return cal;                                  // return the date part
 	}
 }

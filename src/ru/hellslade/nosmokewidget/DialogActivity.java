@@ -2,9 +2,7 @@ package ru.hellslade.nosmokewidget;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,12 +17,6 @@ public class DialogActivity extends Activity implements OnClickListener {
 
 	int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-	public final static String WIDGET_PREF = "widget_pref";
-	public final static String WIDGET_DATE = "widget_date_";
-	public final static String WIDGET_YEARS = "widget_years_";
-	public final static String WIDGET_COUNT = "widget_count_";
-	public final static String WIDGET_PRICE = "widget_price_";
-	
 	private ImageButton shareVkButton, shareOdnoklassnikiButton, shareTwitterButton, shareFacebookButton, shareInstagramButton;
 	private TextView configTitleTextView;
 	

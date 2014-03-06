@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.vk.sdk.VKUIHelper;
-
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -22,19 +20,21 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.vk.sdk.VKUIHelper;
+
 public class ConfigActivity extends Activity implements OnClickListener {
 	
 	private final static String TAG = "ConfigActivity";
 
 	int widgetID = AppWidgetManager.INVALID_APPWIDGET_ID;
 	Intent resultValue;
-
+	/*
 	public final static String WIDGET_PREF = "widget_pref";
 	public final static String WIDGET_DATE = "widget_date_";
 	public final static String WIDGET_YEARS = "widget_years_";
 	public final static String WIDGET_COUNT = "widget_count_";
 	public final static String WIDGET_PRICE = "widget_price_";
-	
+	*/
 	private EditText editTextYears, editTextCount, editTextPrice;
 	private DatePicker datePicker;
 	
@@ -86,14 +86,14 @@ public class ConfigActivity extends Activity implements OnClickListener {
 		datePicker = (DatePicker) findViewById(R.id.datePicker);
 	}
 	private void fillUI(Bundle extras) {
-		SharedPreferences sp = this.getSharedPreferences(ConfigActivity.WIDGET_PREF, Context.MODE_PRIVATE);
+		SharedPreferences sp = this.getSharedPreferences(Utils.WIDGET_PREF, Context.MODE_PRIVATE);
 		
-		String widgetData = sp.getString(ConfigActivity.WIDGET_DATE + widgetID, null);
+		String widgetData = sp.getString(Utils.WIDGET_DATE + widgetID, null);
 		if (widgetData == null)
 			return;
-		String widgetCount = sp.getString(ConfigActivity.WIDGET_COUNT + widgetID, null);
-		String widgetPrice = sp.getString(ConfigActivity.WIDGET_PRICE + widgetID, null);
-		String widgetYears = sp.getString(ConfigActivity.WIDGET_YEARS + widgetID, null);
+		String widgetCount = sp.getString(Utils.WIDGET_COUNT + widgetID, null);
+		String widgetPrice = sp.getString(Utils.WIDGET_PRICE + widgetID, null);
+		String widgetYears = sp.getString(Utils.WIDGET_YEARS + widgetID, null);
 		
 		int count = 0, years = 0;
 	    float price = 0;
@@ -105,7 +105,7 @@ public class ConfigActivity extends Activity implements OnClickListener {
 		editTextCount.setText(String.valueOf(count));
 		editTextPrice.setText(String.valueOf(price));
 		
-		SimpleDateFormat  format = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat  format = new SimpleDateFormat("dd.MM.yyyy", Utils.mLocale);
 		Log.v(TAG, "date " + widgetData);
 	    try {
 	    	Date date = format.parse(widgetData);
@@ -124,7 +124,7 @@ public class ConfigActivity extends Activity implements OnClickListener {
 	}
 	private void okClick() {
 		// Записываем значения с экрана в Preferences
-	    SharedPreferences sp = getSharedPreferences(WIDGET_PREF, MODE_PRIVATE);
+	    SharedPreferences sp = getSharedPreferences(Utils.WIDGET_PREF, MODE_PRIVATE);
 	    Editor editor = sp.edit();
 	    // Перед записью нужно проверить формат даты
 	    int day = datePicker.getDayOfMonth();
@@ -141,10 +141,10 @@ public class ConfigActivity extends Activity implements OnClickListener {
 	        finish();
 	    }
 	    */
-	    editor.putString(WIDGET_DATE + widgetID, dtStart);
-	    editor.putString(WIDGET_YEARS + widgetID, editTextYears.getText().toString());
-	    editor.putString(WIDGET_COUNT + widgetID, editTextCount.getText().toString());
-	    editor.putString(WIDGET_PRICE + widgetID, editTextPrice.getText().toString());
+	    editor.putString(Utils.WIDGET_DATE + widgetID, dtStart);
+	    editor.putString(Utils.WIDGET_YEARS + widgetID, editTextYears.getText().toString());
+	    editor.putString(Utils.WIDGET_COUNT + widgetID, editTextCount.getText().toString());
+	    editor.putString(Utils.WIDGET_PRICE + widgetID, editTextPrice.getText().toString());
 	    editor.commit();
 	    
 	    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
