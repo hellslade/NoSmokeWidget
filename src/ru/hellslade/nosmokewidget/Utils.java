@@ -62,7 +62,7 @@ public class Utils {
         float left = (dstWidth - width)/2;
         float top = (dstHeight - height)/2;
         Paint p = new Paint();
-        p.setAlpha(50);
+        p.setAlpha(100);
         Matrix matrix = new Matrix();
         float scaleFactor = (dstHeight-20*density)/height;
         matrix.postScale(scaleFactor, scaleFactor, width/2, height/2);
@@ -85,7 +85,8 @@ public class Utils {
             mTextPaint.setTextSize(40);
             mTextPaint.setAntiAlias(true);
             mTextPaint.setColor(Color.parseColor("#000000")); // „ерный текст
-            float textHeight = mTextPaint.descent() - mTextPaint.ascent();
+            mTextPaint.setFakeBoldText(true);
+//            float textHeight = mTextPaint.descent() - mTextPaint.ascent();
             
             // 
             int[] dd = dayMonthYearBetween(date, now.getTime());
@@ -94,10 +95,21 @@ public class Utils {
             
             Bitmap d0 = BitmapFactory.decodeResource(context.getResources(), digits[0]);
             Bitmap d1 = BitmapFactory.decodeResource(context.getResources(), digits[1]);
+            
             Bitmap d2 = BitmapFactory.decodeResource(context.getResources(), digits[2]);
             Bitmap d3 = BitmapFactory.decodeResource(context.getResources(), digits[3]);
+            
             Bitmap d4 = BitmapFactory.decodeResource(context.getResources(), digits[4]);
             Bitmap d5 = BitmapFactory.decodeResource(context.getResources(), digits[5]);
+            
+            // “екст "дней, мес€цев, лет"
+            String days_label = getDaysLabel(context, dd[0]);
+            String months_label = getMonthsLabel(context, dd[1]);
+            String years_label = getYearsLabel(context, dd[2]);
+            // Ўирина текстов "дней, мес€цев, лет"
+            float days_label_width = mTextPaint.measureText(days_label);
+            float months_label_width = mTextPaint.measureText(months_label);
+            float years_label_width = mTextPaint.measureText(years_label);
             
             float digit_width = d0.getWidth();
             float digit_height = d0.getHeight();
@@ -105,6 +117,9 @@ public class Utils {
             scaleFactor = (dstHeight-20*density)/digit_height;
             float scaledWidth = digit_width*scaleFactor;
             float scaledHeight = digit_height*scaleFactor;
+            
+            // Ўирина пары цифр (»зображений цифр)
+            float digit_pair_width = scaledWidth*2 - 10*density;
             
             m.postScale(scaleFactor, scaleFactor);
             top = (dstHeight-scaledHeight)/2;
@@ -115,18 +130,19 @@ public class Utils {
             canvas.drawBitmap(d0, m, null);
             m.postTranslate(-scaledWidth+10*density, 0);
             canvas.drawBitmap(d1, m, null);
-//            canvas.drawText(getDaysLabel(context, dd[0]), dstWidth-2*scaledWidth-10*density, textTop, mTextPaint);
+            canvas.drawText(days_label, dstWidth - (digit_pair_width + days_label_width)/2, textTop, mTextPaint);
             // ¬ывод ћес€цев
             m.postTranslate(-scaledWidth, 0);
             canvas.drawBitmap(d2, m, null);
             m.postTranslate(-scaledWidth+10*density, 0);
             canvas.drawBitmap(d3, m, null);
+            canvas.drawText(months_label, dstWidth - 2*digit_pair_width + (digit_pair_width - months_label_width)/2, textTop, mTextPaint);
             // ¬ывод Ћет
             m.postTranslate(-scaledWidth, 0);
             canvas.drawBitmap(d4, m, null);
             m.postTranslate(-scaledWidth+10*density, 0);
             canvas.drawBitmap(d5, m, null);
-//            canvas.drawText(getYearsLabel(context, dd[0]), dstWidth-6*scaledWidth-10*density, textTop, mTextPaint);
+            canvas.drawText(years_label, dstWidth-3*digit_pair_width + (digit_pair_width - years_label_width)/2, textTop, mTextPaint);
             
         } catch (ParseException e) {  
             Log.v(TAG, "ќшибка парсинга даты" + e.getMessage()); 
@@ -389,6 +405,43 @@ public class Utils {
         
         return result;
     }
+    /**
+     * ¬ернет правильное склонение количества мес€цев
+     * <string-array name="months">
+     *   <item>мес€ц</item>
+     *   <item>мес€ца</item>
+     *   <item>мес€цев</item>
+     * </string-array>
+     * если предпоследн€ цифра 1, то "мес€цев"
+     * иначе если последн€€ цифра 0 или >=5, то "мес€цев"
+     * иначе если последн€€ цифра 2,3 или 4, то "мес€ца"
+     * иначе "мес€ц".
+     * @param context
+     * @param months
+     * @return
+     */
+    public static String getMonthsLabel(Context context, long month) {
+        // % -- mod
+        // / -- div
+        Resources res = context.getResources();
+        String result = res.getStringArray(R.array.months)[0];
+        
+        long prevprev = (month % 100) / 10; // ѕредпоследн€€ цифра
+        long prev = month % 10; // ѕоследн€€ цифра
+        
+        if (prevprev == 1) {
+            result = res.getStringArray(R.array.months)[2];
+        } else if (prev == 0 || prev >= 5) {
+            result = res.getStringArray(R.array.months)[2];
+        } else if (prev >=2 && prev <= 4) {
+            result = res.getStringArray(R.array.months)[1];
+        } else {
+            result = res.getStringArray(R.array.months)[0];
+        }
+        
+        return result;
+    }
+    
     /**
      * ¬ернет правильное склонение количества лет
      * <string-array name="years">
