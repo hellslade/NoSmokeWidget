@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -68,8 +69,8 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 	private static String mVkTokenKey = "vk_token_key";
 	
 	private ImageView postImage;
+	private EditText postText;
 	
-//	private TextPaint mTextPaint;
 	private Bitmap mBitmap;
 	
 	VKSdkListener vkListener = new VKSdkListener() {
@@ -113,6 +114,7 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.share_vk_layout);
 	    postImage = (ImageView)findViewById(R.id.postImage);
+	    postText = (EditText)findViewById(R.id.descriptionEditText);
 	    ((Button)findViewById(R.id.postButton)).setOnClickListener(this);
 		// извлекаем ID конфигурируемого виджета
 	    Intent intent = getIntent();
@@ -164,7 +166,8 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 				Log.v(TAG, "onComplete");
 				photo.recycle();
                 VKPhoto photoModel = ((VKPhotoArray) response.parsedModel).get(0);
-                makePost(String.format("photo%s_%s", photoModel.owner_id, photoModel.id));
+                String play_link = "https://play.google.com/store/apps/details?id=ru.hellslade.nosmokewidget";
+                makePost(String.format("photo%s_%s,%s", photoModel.owner_id, photoModel.id, play_link));
 			} 
 			@Override 
 			public void onError(VKError error) { 
@@ -187,7 +190,7 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 		});
 	}
 	private void makePost(String attachments) {
-        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, attachments));
+        VKRequest post = VKApi.wall().post(VKParameters.from(VKApiConst.ATTACHMENTS, attachments, VKApiConst.MESSAGE, postText.getText()));
         post.setModelClass(VKWallPostResult.class);
         post.executeWithListener(new VKRequestListener() {
             @Override
