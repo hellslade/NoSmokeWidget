@@ -61,7 +61,10 @@ public class DialogActivity extends Activity implements OnClickListener {
 				this.finish();
 				break;
 			case R.id.shareOdnoklassnikiButton:
-				this.finish();
+			    Intent shareOkIntent = new Intent(DialogActivity.this, ShareOkActivity.class);
+			    shareOkIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+                startActivity(shareOkIntent);
+                this.finish();
 				break;
 			case R.id.shareTwitterButton:
 				this.finish();

@@ -135,7 +135,7 @@ public class ShareVkActivity extends Activity implements OnClickListener {
         postImage.setImageBitmap(mBitmap);
 	    
 	    VKAccessToken token = VKAccessToken.tokenFromSharedPreferences(this, mVkTokenKey);
-	    VKSdk.initialize(vkListener, Constants.VK_API_ID, token);
+	    VKSdk.initialize(vkListener, Constants.VK_APP_ID, token);
 	    VKSdk.authorize(mVkScope, false, false);
 	}
 	
@@ -147,24 +147,20 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 				break;
 		}
 	}
-	private Bitmap getPhoto() {
-		return mBitmap;
-	}
-	
 	private void shareVk() {
 		// Непосредственно публикация
 		int user_id = 0; // публикуем на свою страницу
 		int group_id = 0; // публикуем на свою страницу
 		VKImageParameters params = VKImageParameters.jpgImage(0.9f);
-		final Bitmap photo = getPhoto();
-		VKUploadImage image = new VKUploadImage(photo, params);
+//		final Bitmap photo = getPhoto();
+		VKUploadImage image = new VKUploadImage(mBitmap, params);
 		VKRequest request = VKApi.uploadWallPhotoRequest(image, user_id, group_id);
 		request.executeWithListener(new VKRequestListener() { 
 			@Override 
 			public void onComplete(VKResponse response) { 
 				//Do complete stuff
 				Log.v(TAG, "onComplete");
-				photo.recycle();
+//				photo.recycle();
                 VKPhoto photoModel = ((VKPhotoArray) response.parsedModel).get(0);
                 String play_link = "https://play.google.com/store/apps/details?id=ru.hellslade.nosmokewidget";
                 makePost(String.format("photo%s_%s,%s", photoModel.owner_id, photoModel.id, play_link));

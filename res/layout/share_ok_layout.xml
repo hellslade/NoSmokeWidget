@@ -12,7 +12,7 @@
          android:layout_centerHorizontal="true"
         />
      <EditText
-         android:id="@+id/descriptionEditText"
+         android:id="@+id/postText"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:hint="Добавьте описание"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="@string/share_done_button"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/descriptionEditText"
+        android:layout_below="@id/postText"
         android:layout_margin="20dp"
         />
 </RelativeLayout>

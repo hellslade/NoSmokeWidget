@@ -105,7 +105,26 @@
             android:name=".ShareVkActivity"
             android:icon="@drawable/app_icon"
             android:label="@string/share_vk_title" />
-        
+		<activity 
+            android:name=".ShareOkActivity"
+            android:icon="@drawable/app_icon"
+            android:label="@string/share_ok_title" />
+		<!-- Хрень для Одноклассников -->
+        <activity
+		    android:name="ru.ok.android.sdk.OkAuthActivity"
+		    android:launchMode="singleTask"
+		    android:configChanges="orientation">
+		    <intent-filter>
+		        <action android:name="android.intent.action.VIEW" />
+		 
+		        <category android:name="android.intent.category.DEFAULT" />
+		        <category android:name="android.intent.category.BROWSABLE" />
+		 
+		        <data
+		            android:scheme="okauth"
+		            android:host="ok396699136" />
+		    </intent-filter>
+		</activity>
 		<activity 
             android:name=".DialogActivity"
             android:icon="@drawable/app_icon"

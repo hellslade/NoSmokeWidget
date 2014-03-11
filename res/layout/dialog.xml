@@ -45,7 +45,6 @@
             android:src="@drawable/odnoklassniki"
             android:background="@drawable/share_bg_selector"
             android:padding="7dp"
-            android:visibility="gone"
             />
         <ImageButton
             android:id="@+id/shareTwitterButton"
