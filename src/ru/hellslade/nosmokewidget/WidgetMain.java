@@ -94,6 +94,7 @@ public class WidgetMain extends AppWidgetProvider {
 	        return;
 	    }
 	    long days_of_nosmoke = count*daysCount;
+	    
 	    widgetView.setTextViewText(R.id.noSmokeCount, String.format(res.getString(R.string.no_smoke_count), days_of_nosmoke));
 	    // price*daysCount расчет неверный. Количество невыкуренных сигарет разделить на 20 -- получим количество пачек.
 	    // Далее уже умножаем на стоимость пачки.
@@ -108,14 +109,7 @@ public class WidgetMain extends AppWidgetProvider {
 	    dialogIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
 	    PendingIntent pIntent = PendingIntent.getActivity(context, widgetID, dialogIntent, 0);
 	    widgetView.setOnClickPendingIntent(R.id.configLayout, pIntent);
-	    /*
-	    // Конфигурационный экран
-	    Intent configIntent = new Intent(context, ConfigActivity.class);
-	    configIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-	    configIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
-	    PendingIntent pIntent = PendingIntent.getActivity(context, widgetID, configIntent, 0);
-	    widgetView.setOnClickPendingIntent(R.id.configLayout, pIntent);
-	    */
+	    
 		// Обновляем виджет
 		appWidgetManager.updateAppWidget(widgetID, widgetView);
 	}
