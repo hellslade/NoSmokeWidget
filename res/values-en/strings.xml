@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">NoSmokeWidget</string>
+	<string name="widget_name">NoSmokeWidget</string>
+	<string name="widget_1_name">NoSmokeWidget Option1</string>
+	<string name="widget_2_name">NoSmokeWidget Option2</string>
+	<string name="widget_3_name">NoSmokeWidget Option3</string>
+	<string name="widget_4_name">NoSmokeWidget Option4</string>
+	<string name="widget_5_name">NoSmokeWidget Option5</string>
+	
+	<string name="no_smoke_date_label">Date of rejection:</string>
+	<string name="no_smoke_count_label">Cigarettes per day:</string>
+	<string name="no_smoke_price_label">Price of a pack:</string>
+	<string name="no_smoke_years_label">Years smoked:</string>
+	
+	<string name="no_smoke_ok">Save</string>
+	
+	<string name="no_smoke_config_title">Configure your counter</string>
+	<string name="no_smoke_dialog_title">Change action:</string>
+	<string name="share_vk_title">Share VKontakte</string>
+	<string name="share_ok_title">Share Odnoklassniki</string>
+	
+	<string name="share_vk_task_progress_caption">Please, wait...</string>
+	<string name="share_ok_task_progress_caption">Please, wait...</string>
+    <string name="share_done_button">Share</string>
+	
+	<string name="no_smoke_dialog_config_title">Configure</string>
+	<string name="no_smoke_dialog_share_title">Share:</string>
+	<string name="no_smoke_dialog_share_vk_title">VKontakte</string>
+	<string name="no_smoke_dialog_share_twitter_title">Twitter</string>
+	<string name="no_smoke_dialog_share_facebook_title">Facebook</string>
+	
+	<string name="no_smoke_days" formatted="false">No smoking %s %s</string>
+	<string name="no_smoke_count" formatted="false">Avoided %s cig.</string>
+	<string name="no_smoke_price" formatted="false">Saved money $%s</string>
+	<string name="smoke_days" formatted="false">Smoked %s %s</string>
+	<string name="smoke_count" formatted="false">Выкурено %s sig.</string>
+	<string name="smoke_price" formatted="false">Затяжек %s</string>
+	
+	<string name="w1_no_smoke_days" formatted="false">Я не курю уже %s %s</string>
+	
+	<string name="w2_no_smoke_days" formatted="false">%s %s</string>
+	
+	<string name="w3_no_smoke_days" formatted="false">Не курю %s %s</string>
+    <string name="w3_no_smoke_count" formatted="false">Невыкурено %s сиг.</string>
+    <string name="w3_no_smoke_price" formatted="false">В копилку на новый BMW %s руб.</string>
+    
+    <string name="w4_no_smoke_days" formatted="false">Не курю %s %s</string>
+    <string name="w4_no_smoke_price" formatted="false">Сэкономив %s руб.</string>
+    
+    <string name="w5_no_smoke_days" formatted="false">Не курю %s %s</string>
+    <string name="w5_no_smoke_count" formatted="false">Не выкурил %s сиг.</string>
+	
+    <string name="feedback" formatted="false">All suggestions and comments, please send mail to grigorev.aleksandr.a@gmail.com</string>
+    
+	<string-array name="days">
+	    <item>days</item>
+	    <item>days</item>
+	    <item>days</item>
+	</string-array>
+	<string-array name="months">
+        <item>months</item>
+        <item>months</item>
+        <item>months</item>
+    </string-array>
+	<string-array name="years">
+        <item>years</item>
+        <item>years</item>
+        <item>years</item>
+    </string-array>
+</resources>

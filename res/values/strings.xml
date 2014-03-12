@@ -12,7 +12,7 @@
 	<string name="no_smoke_price_label">Стоимость пачки:</string>
 	<string name="no_smoke_years_label">Лет курения:</string>
 	
-	<string name="no_smoke_ok">Добавить</string>
+	<string name="no_smoke_ok">Сохранить</string>
 	
 	<string name="no_smoke_config_title">Настройте свой счетчик</string>
 	<string name="no_smoke_dialog_title">Выберите действие:</string>
@@ -50,6 +50,8 @@
     <string name="w5_no_smoke_days" formatted="false">Не курю %s %s</string>
     <string name="w5_no_smoke_count" formatted="false">Не выкурил %s сиг.</string>
 	
+    <string name="feedback" formatted="false">Все пожелания и замечания направляйте, пожалуйста, на почту grigorev.aleksandr.a@gmail.com</string>
+    
 	<string-array name="days">
 	    <item>день</item>
 	    <item>дня</item>

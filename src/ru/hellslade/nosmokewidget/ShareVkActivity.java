@@ -73,6 +73,43 @@ public class ShareVkActivity extends Activity implements OnClickListener {
 	
 	private Bitmap mBitmap;
 	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.share_vk_layout);
+	    postImage = (ImageView)findViewById(R.id.postImage);
+	    postText = (EditText)findViewById(R.id.descriptionEditText);
+	    ((Button)findViewById(R.id.postButton)).setOnClickListener(this);
+		// извлекаем ID конфигурируемого виджета
+	    Intent intent = getIntent();
+	    Bundle extras = intent.getExtras();
+	    if (extras != null) {
+	        widgetID = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+	        
+	    }
+	    // и проверяем его корректность
+	    if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) {
+	        finish();
+	    }
+	    mBitmap = Utils.getShareBitmap(this, widgetID);
+        if (mBitmap == null) {
+            Toast.makeText(this, "Не удалось получить изображение для поста", Toast.LENGTH_LONG).show();
+            finish();
+        }
+        postImage.setImageBitmap(mBitmap);
+	    
+        postImage.post(new Runnable() {
+			@Override
+			public void run() {
+				VKAccessToken token = VKAccessToken.tokenFromSharedPreferences(ShareVkActivity.this, mVkTokenKey);
+				VKSdk.initialize(vkListener, Constants.VK_APP_ID, token);
+				if (token == null) {
+					VKSdk.authorize(mVkScope, false, false);
+				}
+			}
+		});
+	}
+
 	VKSdkListener vkListener = new VKSdkListener() {
         @Override
         public void onTokenExpired(VKAccessToken expiredToken) {
@@ -108,36 +145,6 @@ public class ShareVkActivity extends Activity implements OnClickListener {
             super.onRenewAccessToken(token);
         }
     };
-    
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.share_vk_layout);
-	    postImage = (ImageView)findViewById(R.id.postImage);
-	    postText = (EditText)findViewById(R.id.descriptionEditText);
-	    ((Button)findViewById(R.id.postButton)).setOnClickListener(this);
-		// извлекаем ID конфигурируемого виджета
-	    Intent intent = getIntent();
-	    Bundle extras = intent.getExtras();
-	    if (extras != null) {
-	        widgetID = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-	        
-	    }
-	    // и проверяем его корректность
-	    if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) {
-	        finish();
-	    }
-	    mBitmap = Utils.getShareBitmap(this, widgetID);
-        if (mBitmap == null) {
-            Toast.makeText(this, "Не удалось получить изображение для поста", Toast.LENGTH_LONG).show();
-            finish();
-        }
-        postImage.setImageBitmap(mBitmap);
-	    
-	    VKAccessToken token = VKAccessToken.tokenFromSharedPreferences(this, mVkTokenKey);
-	    VKSdk.initialize(vkListener, Constants.VK_APP_ID, token);
-	    VKSdk.authorize(mVkScope, false, false);
-	}
 	
 	@Override
 	public void onClick(View v) {
